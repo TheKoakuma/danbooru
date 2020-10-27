@@ -42,12 +42,17 @@ else
   LIBSSL_DEV_PKG=$( verlt `lsb_release -sr` 9.0 && echo libssl-dev || echo libssl1.0-dev )
   LIBJPEG_TURBO_DEV_PKG=libjpeg62-turbo-dev
 fi
+
+nginx=stable
+add-apt-repository ppa:nginx/$nginx
+
 apt-get update
 apt-get -y install apt-transport-https
 apt-get -y install zlib1g-dev libglib2.0-dev
 apt-get -y install $LIBSSL_DEV_PKG build-essential automake libxml2-dev libxslt-dev ncurses-dev sudo libreadline-dev flex bison ragel redis git curl libcurl4-openssl-dev sendmail-bin sendmail nginx ssh coreutils ffmpeg mkvtoolnix
 apt-get -y install libpq-dev postgresql-client
 apt-get -y install liblcms2-dev $LIBJPEG_TURBO_DEV_PKG libexpat1-dev libgif-dev libpng-dev libexif-dev
+apt-get -y install curl
 
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
@@ -71,7 +76,7 @@ make install
 ldconfig
 
 # Create user account
-useradd -m danbooru
+/usr/sbin/useradd -m danbooru
 chsh -s /bin/bash danbooru
 usermod -G danbooru,sudo danbooru
 
